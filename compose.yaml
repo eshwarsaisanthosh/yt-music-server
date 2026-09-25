@@ -1,0 +1,25 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      YTM_DATA_ROOT: /data
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  worker:
+    build: .
+    command: ["python", "-m", "app.worker"]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      YTM_DATA_ROOT: /data
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
